@@ -1,9 +1,10 @@
 # candidate tests.py
 
 from django.test import TestCase
+from django.db.utils import IntegrityError
 
 from all_users.models import User
-from .models import Candidate_Profile
+from .models import CandidateProfile
 
 class CandidateModelTest(TestCase):
 
@@ -19,7 +20,7 @@ class CandidateModelTest(TestCase):
 
 
 	def test_candidate_username(self):
-		first_candidate_profile = Candidate_Profile.objects.create(
+		first_candidate_profile = CandidateProfile.objects.create(
 			user = self.first_candidate,
 			biography = 'I am the first test candidate.'
 		)
@@ -29,7 +30,7 @@ class CandidateModelTest(TestCase):
 
 	def test_candidate_biography(self):
 
-		first_candidate_profile = Candidate_Profile.objects.create(
+		first_candidate_profile = CandidateProfile.objects.create(
 			user = self.first_candidate,
 			biography = 'I am the first test candidate.'
 		)
@@ -38,14 +39,28 @@ class CandidateModelTest(TestCase):
 
 	def test_candidate_count(self):
 
-		first_candidate_profile = Candidate_Profile.objects.create(
+		first_candidate_profile = CandidateProfile.objects.create(
 			user = self.first_candidate,
 			biography = 'I am the first test candidate.'
 		)
 
-		second_candidate_profile = Candidate_Profile.objects.create(
+		second_candidate_profile = CandidateProfile.objects.create(
 			user = self.second_candidate,
 			biography = 'I am the second test candidate.'
 		)
 
-		self.assertEqual(Candidate_Profile.objects.count(), 2)
+		self.assertEqual(CandidateProfile.objects.count(), 2)
+
+	def test_one_profile_per_user(self):
+
+		with self.assertRaises(IntegrityError):
+
+			first_candidate_profile = CandidateProfile.objects.create(
+				user = self.first_candidate,
+				biography = 'I am the first test candidate profile.'
+			)
+
+			second_candidate_profile = CandidateProfile.objects.create(
+				user = self.first_candidate,
+				biography = 'I am the second test candidate profile by the same user.'
+			)

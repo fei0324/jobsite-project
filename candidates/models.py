@@ -4,7 +4,7 @@ from django.db import models
 
 from all_users.models import User
 
-class Candidate_Profile(models.Model):
+class CandidateProfile(models.Model):
 
 	user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
 	biography = models.TextField()
@@ -14,4 +14,3 @@ class Candidate_Profile(models.Model):
 	def __str__(self):
 		return self.user.username
 
-	

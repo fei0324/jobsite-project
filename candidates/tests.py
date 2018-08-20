@@ -92,10 +92,38 @@ class CandidateProfileTests(APITestCase):
 			user_type = 'employer',
 			username = 'first_employer',
 		)
-		self.endpoint = reverse('candidate-api:create')
+		self.candidate = User.objects.create(
+			user_type = 'candidate',
+			username = 'first_candidate',
+		)
 
 	def test_employer_cannot_create_candidate_profile(self):
 
 		self.client.force_authenticate(self.employer)
-		resp = self.client.post(self.endpoint, {'biography':'I am an employer'})
+		endpoint = reverse('candidate-api:create')
+		resp = self.client.post(endpoint, {'biography':'I am an employer'})
 		self.assertEqual(resp.status_code, 403)
+
+	def test_candidate_create_profile(self):
+
+		self.client.force_authenticate(self.candidate)
+		endpoint = reverse('candidate-api:create')
+		resp = self.client.post(endpoint, {'biography': 'Hi I am the first candidate.'})
+		self.assertEqual(resp.status_code, 201)
+
+	def test_nonowner_cannot_edit(self):
+
+		self.client.force_authenticate(self.employer)
+		endpoint = reverse('candidate-api:detail', kwargs={'pk': 1})
+		resp = self.client.put(endpoint, {'biography': 'I am not the owner of the post'})
+		self.assertEqual(resp.status_code, 404)
+
+	def test_owner_can_edit(self):
+
+		self.client.force_authenticate(self.employer)
+		endpoint = reverse('candidate-api:detail', kwargs={'pk':1})
+		print(endpoint)
+		resp = self.client.put(endpoint, {'biography': 'I am the owner I can edit.'})
+		self.assertEqual(resp.status_code, 202)
+
+

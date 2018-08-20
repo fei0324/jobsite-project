@@ -2,9 +2,14 @@
 
 from django.test import TestCase
 from django.db.utils import IntegrityError
+from django.urls import reverse
+from rest_framework import status
+from rest_framework.test import APITestCase, force_authenticate
 
-from all_users.models import User
+from django.contrib.auth import get_user_model
 from .models import CandidateProfile
+
+User = get_user_model()
 
 class CandidateModelTest(TestCase):
 
@@ -65,18 +70,32 @@ class CandidateModelTest(TestCase):
 				biography = 'I am the second test candidate profile by the same user.'
 			)
 
+	# def test_employer_cannot_create_candidate_profile(self):
+
+	# 	with self.assertRaises(IntegrityError):
+
+	# 		test_employer = User.objects.create(
+	# 			user_type = 'employer',
+	# 			username = 'first_employer',
+	# 		)
+
+	# 		test_candidate_profile = CandidateProfile.objects.create(
+	# 			user = test_employer,
+	# 			biography = 'This profile should not be created.'
+	# 		)
+		
+class CandidateProfileTests(APITestCase):
+
+	def setUp(self):
+
+		self.employer = User.objects.create(
+			user_type = 'employer',
+			username = 'first_employer',
+		)
+		self.endpoint = reverse('candidate-api:create')
+
 	def test_employer_cannot_create_candidate_profile(self):
 
-		with self.assertRaises(IntegrityError):
-
-			test_employer = User.objects.create(
-				user_type = 'employer',
-				username = 'first_employer',
-			)
-
-			test_candidate_profile = CandidateProfile.objects.create(
-				user = test_employer,
-				biography = 'This profile should not be created.'
-			)
-		
-
+		self.client.force_authenticate(self.employer)
+		resp = self.client.post(self.endpoint, {'biography':'I am an employer'})
+		self.assertEqual(resp.status_code, 403)

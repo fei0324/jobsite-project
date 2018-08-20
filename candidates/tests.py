@@ -64,3 +64,19 @@ class CandidateModelTest(TestCase):
 				user = self.first_candidate,
 				biography = 'I am the second test candidate profile by the same user.'
 			)
+
+	def test_employer_cannot_create_candidate_profile(self):
+
+		with self.assertRaises(IntegrityError):
+
+			test_employer = User.objects.create(
+				user_type = 'employer',
+				username = 'first_employer',
+			)
+
+			test_candidate_profile = CandidateProfile.objects.create(
+				user = test_employer,
+				biography = 'This profile should not be created.'
+			)
+		
+

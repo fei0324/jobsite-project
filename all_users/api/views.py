@@ -17,7 +17,6 @@ class UserCreateAPIView(generics.CreateAPIView):
 
 class UserDetailView(generics.RetrieveUpdateAPIView):
 
-	queryset = User.objets.filter(user_type='candidates')
 	serializer_class = UserCreationSerializer
 	permission_classes = [permissions.IsAuthenticated, IsOwner]
 

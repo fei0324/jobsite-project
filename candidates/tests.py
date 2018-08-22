@@ -70,23 +70,12 @@ class CandidateModelTest(TestCase):
 				biography = 'I am the second test candidate profile by the same user.'
 			)
 
-	# def test_employer_cannot_create_candidate_profile(self):
-
-	# 	with self.assertRaises(IntegrityError):
-
-	# 		test_employer = User.objects.create(
-	# 			user_type = 'employer',
-	# 			username = 'first_employer',
-	# 		)
-
-	# 		test_candidate_profile = CandidateProfile.objects.create(
-	# 			user = test_employer,
-	# 			biography = 'This profile should not be created.'
-	# 		)
 		
 class CandidateProfileTests(APITestCase):
 
 	def setUp(self):
+		
+		super().setUp()
 
 		self.employer = User.objects.create(
 			user_type = 'employer',
@@ -114,16 +103,19 @@ class CandidateProfileTests(APITestCase):
 	def test_nonowner_cannot_edit(self):
 
 		self.client.force_authenticate(self.employer)
-		endpoint = reverse('candidate-api:detail', kwargs={'pk': 1})
+		endpoint = reverse('candidate-api:detail', kwargs={'pk':1})
 		resp = self.client.put(endpoint, {'biography': 'I am not the owner of the post'})
 		self.assertEqual(resp.status_code, 404)
 
 	def test_owner_can_edit(self):
 
-		self.client.force_authenticate(self.employer)
-		endpoint = reverse('candidate-api:detail', kwargs={'pk':1})
-		print(endpoint)
+		self.client.force_authenticate(self.candidate)
+		candidate = CandidateProfile.objects.create(
+				user = self.candidate,
+				biography = 'this is the first version'
+			)
+		endpoint = reverse('candidate-api:detail', kwargs={'pk':candidate.pk})
 		resp = self.client.put(endpoint, {'biography': 'I am the owner I can edit.'})
-		self.assertEqual(resp.status_code, 202)
+		self.assertEqual(resp.status_code, 200)
 
 

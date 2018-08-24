@@ -39,16 +39,40 @@ class AllUserTests(APITestCase):
 
 	def setUp(self):
 
+		super().setUp()
+
+		self.first_candidate = User.objects.create(
+			user_type = 'candidate',
+			username = 'first_candidate',
+		)
+		self.second_candidate = User.objects.create(
+			user_type = 'candidate',
+			username = 'second_candidate',
+		)
+		self.client.force_authenticate(self.second_candidate)
+
+	def test_nonowner_cannot_view_user_detail(self):
+
+		# This test is not working as expected
+		endpoint = reverse('user-api:detail', kwargs={'pk':self.first_candidate.pk})
+		print(endpoint)
+		resp = self.client.get(endpoint)
+		self.assertEqual(resp.status_code, 403)
+
+class AllUserAdminViewTests(APITestCase):
+
+	def setUp(self):
+
+		super().setUp()
+
 		self.candidate = User.objects.create(
 			user_type = 'candidate',
 			username = 'first_candidate',
 		)
 		self.client.force_authenticate(self.candidate)
 
-	def test_nonowner_cannot_view_user_detail(self):
+	def test_users_cannot_view_user_list(self):
 
-		# This test is not working as expected
-		endpoint = reverse('user-api:detail', kwargs={'pk':2})
-		print(endpoint)
+		endpoint = reverse('user-api:admin-list')
 		resp = self.client.get(endpoint)
 		self.assertEqual(resp.status_code, 403)

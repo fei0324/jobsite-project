@@ -16,10 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from .views import HomeView
+
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/candidate/', include('candidates.api.urls', namespace='candidate-api')),
+    path('', HomeView.as_view(), name='home'),
+    path('user/', include('all_users.urls', namespace='all_users')),
+
     path('api/user/', include('all_users.api.urls', namespace='user-api')),
+    path('api/candidate/', include('candidates.api.urls', namespace='candidate-api')),
+    
 ]

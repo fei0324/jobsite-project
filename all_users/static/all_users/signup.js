@@ -11,7 +11,7 @@ $(function(){
 		var confirm_password = $("#signUpPassword2").val();
 
 		$.ajax({
-			url: "/localhost/api/user/create/",
+			url: "/api/user/create/",
 			data: {
 				username: username,
 				email: email,

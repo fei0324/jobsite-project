@@ -23,7 +23,7 @@ class UserCreateAPIView(generics.CreateAPIView):
 		if serializer.is_valid():
 			serializer.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
-		return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserDetailAPIView(generics.RetrieveUpdateAPIView):

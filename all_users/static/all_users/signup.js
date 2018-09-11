@@ -2,27 +2,22 @@
 $(function(){
 	console.log("Ready!")
 
-	var username = $("#signUpUsername").val();
-	var password1 = $("#signUpPassword1").val();
-	var password2 = $("#signUpPassword2").val();
+	$("#signUpButton").click(function(event){
 
-	var password = ""
+		var username = $("#signUpUsername").val();
+		var email = $("#signUpEmail").val();
+		var user_type = $("#signUpUserType").val();
+		var password = $("#signUpPassword1").val();
+		var confirm_password = $("#signUpPassword2").val();
 
-	if (password1 == password2){
-		password = password1
-	} else {
-		console.log("Passwords don't match.")
-	}
-
-	var user_type = $("#signUpUserType").val()
-
-	$("#signUpButton").submit(function(event){
 		$.ajax({
-			url: "api/user/create/",
+			url: "/localhost/api/user/create/",
 			data: {
 				username: username,
-				password: password,
+				email: email,
 				user_type: user_type,
+				password: password,
+				confirm_password: confirm_password,
 			},
 			method: "POST",
 			success: function(url, data) {

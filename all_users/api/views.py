@@ -2,6 +2,8 @@
 
 from rest_framework import generics
 from rest_framework import permissions
+from rest_framework.response import Response
+from rest_framework import status
 
 from django.contrib.auth import get_user_model
 from .serializers import UserDisplaySerializer, UserCreationSerializer
@@ -13,6 +15,15 @@ class UserCreateAPIView(generics.CreateAPIView):
 
 	serializer_class = UserCreationSerializer
 	permission_classes = [permissions.AllowAny,]
+
+	def post(self, request):
+
+		serializer = UserCreationSerializer(data=request.data)
+
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
 
 
 class UserDetailAPIView(generics.RetrieveUpdateAPIView):

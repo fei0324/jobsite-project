@@ -20,10 +20,16 @@ $(function(){
 				confirm_password: confirm_password,
 			},
 			method: "POST",
+			//dataType: 'json',
 			success: function(url, data) {
 				console.log(url)
 				console.log(data)
 			},
+			error: function(response) {
+				console.log(response.responseJSON)
+				$("#signUpError").append(response.responseJSON);
+			},
 		});
+		return false;
 	});
 });

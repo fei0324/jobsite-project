@@ -8,6 +8,8 @@
 			<div class="col-sm-5">
 				<h4>Sign up</h4>
 				<form>
+					{% csrf_token %}
+					<div id="signUpError">hello</div>
 					<div class="form-group">
 						<label for="signUpUsername">Username</label>
 						<input type="text" class="form-control" id="signUpUsername" placeholder="Enter username">

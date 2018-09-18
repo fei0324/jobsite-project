@@ -8,14 +8,15 @@
 			<div class="col-sm-5">
 				<h4>Sign up</h4>
 				<form>
-					{% csrf_token %}
-					<div id="signUpError">hello</div>
+					<div class="signUpError" id="signUpNonFieldError">hello</div>
 					<div class="form-group">
 						<label for="signUpUsername">Username</label>
+						<div class="signUpError" id="signUpUsernameError"></div>
 						<input type="text" class="form-control" id="signUpUsername" placeholder="Enter username">
 					</div>
 					<div class="form-group">
 						<label for="signUpEmail">Email</label>
+						<div class="signUpError" id="signUpEmailError"></div>
 						<input type="email" class="form-control" id="signUpEmail" placeholder="Enter email">
 					</div>
 					<div class="form-group">
@@ -27,10 +28,12 @@
 					</div>
 					<div class="form-group">
 						<label for="signUpPassword">Password</label>
+						<div class="signUpError" id="signUpPasswordError"></div>
 						<input type="password" class="form-control" id="signUpPassword1" placeholder="Password">
 					</div>
 					<div class="form-group">
 						<label for="signUpPassword">Confirm Password</label>
+						<div class="signUpError" id="signUpConfirmPasswordError"></div>
 						<input type="password" class="form-control" id="signUpPassword2" placeholder="Password">
 					</div>
 					<button type="submit" class="btn btn-primary" id="signUpButton">Sign up</button>

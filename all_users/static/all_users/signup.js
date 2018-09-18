@@ -24,10 +24,16 @@ $(function(){
 			success: function(url, data) {
 				console.log(url)
 				console.log(data)
+				alert("Thanks for signing up!");
 			},
 			error: function(response) {
-				console.log(response.responseJSON)
-				$("#signUpError").append(response.responseJSON);
+				console.log("not sure why this isn't working.");
+				console.log(response.responseJSON['username']);
+				$("#signUpNonFieldError").text(response.responseJSON['non_field_errors']);
+				$("#signUpUsernameError").text(response.responseJSON['username']);
+				$("#signUpEmailError").text(response.responseJSON['email']);
+				$("#signUpPasswordError").text(response.responseJSON['password']);
+				$("#signUpConfirmPasswordError").text(response.responseJSON['confirm_password']);
 			},
 		});
 		return false;

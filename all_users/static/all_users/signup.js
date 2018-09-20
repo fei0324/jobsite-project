@@ -27,8 +27,6 @@ $(function(){
 				alert("Thanks for signing up!");
 			},
 			error: function(response) {
-				console.log("not sure why this isn't working.");
-				console.log(response.responseJSON['username']);
 				$("#signUpNonFieldError").text(response.responseJSON['non_field_errors']);
 				$("#signUpUsernameError").text(response.responseJSON['username']);
 				$("#signUpEmailError").text(response.responseJSON['email']);
@@ -38,4 +36,30 @@ $(function(){
 		});
 		return false;
 	});
+
+	$("#loginButton").click(function(event){
+
+		var username = $("#loginUsername").val();
+		var password = $("#loginPassword").val();
+
+		$.ajax({
+			url: "/user/login/",
+			data: {
+				username: username,
+				password: password,
+			},
+			method: "POST",
+			success: function(response) {
+				console.log(response);
+				if (response.responseJSON['result'] == 'success') {
+					location.window.href = "/"
+				} else {
+					console.log(response)
+					$(".loginError").text(response.responseJSON['message'])
+				};
+			},
+		});
+		return false;
+	});
 });
+

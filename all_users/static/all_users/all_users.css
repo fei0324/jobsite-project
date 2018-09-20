@@ -1,0 +1,11 @@
+/*all_users.css*/
+
+.signUpError {
+	color: red;
+	font-size: 0.7em;
+}
+
+.loginError {
+	color: red;
+	font-size: 0.7em;
+}

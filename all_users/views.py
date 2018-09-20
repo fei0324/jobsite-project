@@ -21,7 +21,7 @@ def login_view(request):
 		username = request.POST['username']
 		password = request.POST['password']
 		user = authenticate(request, username=username, password=password)
-	
+
 		response_data = {}
 
 		if user is not None:
@@ -31,5 +31,8 @@ def login_view(request):
 			response_data['result'] = 'failed'
 			response_data['message'] = 'Username or password incorrect'
 
-	return HttpResponse(json.dumps(response_data), content_type='application/json')
+	return HttpResponse(
+		json.dumps(response_data),
+		content_type='application/json',
+		status=201)
 

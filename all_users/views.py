@@ -17,7 +17,6 @@ def login_view(request):
 
 	if request.method == 'POST':
 
-		print("Am I in here yet?")
 		username = request.POST['username']
 		password = request.POST['password']
 		user = authenticate(request, username=username, password=password)
@@ -27,6 +26,9 @@ def login_view(request):
 		if user is not None:
 			login(request, user)
 			response_data['result'] = 'success'
+		elif username == '' or password == '':
+			response_data['result'] = 'failed'
+			response_data['message'] = 'Username or password cannot be blank'
 		else:
 			response_data['result'] = 'failed'
 			response_data['message'] = 'Username or password incorrect'

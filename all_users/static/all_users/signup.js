@@ -42,11 +42,11 @@ $(function(){
 		var username = $("#loginUsername").val();
 		var password = $("#loginPassword").val();
 
-		if (!username || !password) {
-			$(".loginError").text("Username and password are required.")
-		} else {
-			$(".loginError").empty()
-		}
+		// if (!username || !password) {
+		// 	$(".loginError").text("Username and password are required.")
+		// } else {
+		// 	$(".loginError").empty()
+		// }
 
 		var csrf_token = $("#csrf_token").children("input").val();
 

@@ -42,22 +42,32 @@ $(function(){
 		var username = $("#loginUsername").val();
 		var password = $("#loginPassword").val();
 
+		if (!username || !password) {
+			$(".loginError").text("Username and password are required.")
+		} else {
+			$(".loginError").empty()
+		}
+
+		var csrf_token = $("#csrf_token").children("input").val();
+
 		$.ajax({
 			url: "/user/login/",
 			data: {
 				username: username,
 				password: password,
 			},
+			headers: {
+				'X-CSRFToken': csrf_token,
+			},
 			method: "POST",
-			success: function(response) {
-				console.log(response);
+			success: function(data, status, response) {
 				if (response.responseJSON['result'] == 'success') {
-					location.window.href = "/"
+					window.location.href = "/"
 				} else {
 					console.log(response)
 					$(".loginError").text(response.responseJSON['message'])
 				};
-			},
+			}
 		});
 		return false;
 	});
